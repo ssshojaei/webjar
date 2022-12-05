@@ -1,0 +1,13 @@
+.btn {
+  @apply min-w-[150px] rounded-2xl py-4 px-2 text-lg font-normal transition-all;
+  &:hover {
+    @apply shadow-md;
+  }
+  &:active {
+    opacity: 0.5;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  &:disabled {
+    @apply bg-[#817F7F];
+  }
+}
