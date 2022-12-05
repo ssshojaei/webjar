@@ -1,0 +1,16 @@
+.header {
+  @apply bg-white shadow-sm sm:min-h-[8rem];
+}
+
+.navlist {
+  @apply mr-8 flex h-full flex-1 gap-12 md:h-32;
+  a {
+    @apply my-auto flex h-full items-center border-b-4 border-transparent px-2 pt-2 transition-all;
+  }
+}
+
+.mobileNav {
+  ul {
+    @apply flex flex-col gap-2;
+  }
+}

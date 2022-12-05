@@ -1,7 +1,9 @@
+import Layout from 'components/Layout'
+
 export default function Home() {
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
+    <Layout>
       <div className="h-28 w-28 bg-indigo-500"></div>
-    </div>
+    </Layout>
   )
 }
