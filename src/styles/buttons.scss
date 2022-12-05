@@ -1,0 +1,7 @@
+.btn-primary {
+  @apply bg-green-500 text-white;
+}
+
+.btn-outline-primary {
+  @apply border-2 border-green-500 text-green-500;
+}

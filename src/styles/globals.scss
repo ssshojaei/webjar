@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 @import '~vazirmatn/Vazirmatn-font-face.css';
+@import './buttons';
 
 body {
-  @apply bg-gray-900;
+  @apply bg-[#E5E5E5];
+}
+
+nav a.active,
+nav a:hover {
+  @apply lg:border-green-500 lg:text-green-500;
 }
