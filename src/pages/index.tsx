@@ -3,6 +3,11 @@ import Breadcrumbs from 'components/Breadcrumbs'
 import SearchInput from 'components/HomePage/SearchInput'
 import Layout from 'components/Layout'
 import React, { ChangeEvent } from 'react'
+import PostList, {
+  ALL_POSTS_QUERY,
+  allPostsQueryVars,
+} from 'components/HomePage/PostList'
+import { initializeApollo, addApolloState } from 'lib/apolloClient'
 
 const links = [
   {
@@ -40,13 +45,22 @@ export default function Home() {
       <div className="container mt-6 py-4">
         <div className="flex flex-col lg:flex-row">
           <div className="flex-1">1</div>
-          <div className="flex flex-[3] flex-col gap-12">
-            {new Array(5).fill(null).map((item, index) => (
-              <BlogItem key={index} index={index} />
-            ))}
-          </div>
+          <PostList search={search} />
         </div>
       </div>
     </Layout>
   )
+}
+
+export async function getStaticProps() {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: ALL_POSTS_QUERY,
+    variables: allPostsQueryVars,
+  })
+
+  return addApolloState(apolloClient, {
+    props: {},
+  })
 }
