@@ -24,9 +24,7 @@ const BlogItem = ({
         alt={title}
         width={300}
         height={280}
-        style={{
-          objectFit: 'cover',
-        }}
+        className="w-full object-cover md:w-auto"
       />
       <div className="w-full px-4 py-4">
         <div className="flex h-full flex-col lg:flex-row">
