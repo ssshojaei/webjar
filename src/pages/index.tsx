@@ -1,13 +1,11 @@
-import BlogItem from 'components/Blog/BlogItem'
 import Breadcrumbs from 'components/Breadcrumbs'
 import SearchInput from 'components/HomePage/SearchInput'
 import Layout from 'components/Layout'
 import React, { ChangeEvent } from 'react'
-import PostList, {
-  ALL_POSTS_QUERY,
-  allPostsQueryVars,
-} from 'components/HomePage/PostList'
+import PostList, { ALL_POSTS_QUERY } from 'components/HomePage/PostList'
 import { initializeApollo, addApolloState } from 'lib/apolloClient'
+import Pagination from 'components/Pagination'
+import { IPost } from 'types/post'
 
 const links = [
   {
@@ -29,10 +27,17 @@ const links = [
 ]
 
 export default function Home() {
+  const [list, setList] = React.useState<IPost[]>([])
   const [search, setSearch] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const PER_PAGE = 4
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
+    setPage(1)
+  }
+  const handleChangePage = (id: number) => {
+    setPage(id)
   }
 
   return (
@@ -45,8 +50,20 @@ export default function Home() {
       <div className="container mt-6 py-4">
         <div className="flex flex-col lg:flex-row">
           <div className="flex-1">1</div>
-          <PostList search={search} />
+          <PostList
+            search={search}
+            page={page}
+            perPage={PER_PAGE}
+            list={list}
+            setList={setList}
+          />
         </div>
+        <Pagination
+          page={page}
+          onChange={handleChangePage}
+          list={list}
+          perPage={PER_PAGE}
+        />
       </div>
     </Layout>
   )
@@ -57,7 +74,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: ALL_POSTS_QUERY,
-    variables: allPostsQueryVars,
   })
 
   return addApolloState(apolloClient, {

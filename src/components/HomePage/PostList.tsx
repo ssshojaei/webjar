@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import BlogItem from 'components/Blog/BlogItem'
 import React from 'react'
 import { IPost } from 'types/post'
+import { paginate } from 'utils'
 import ErrorMessage from './ErrorMessage'
 
 export const ALL_POSTS_QUERY = gql`
@@ -21,19 +22,16 @@ export const ALL_POSTS_QUERY = gql`
   }
 `
 
-export const allPostsQueryVars = {
-  skip: 0,
-  first: 10,
-}
-
 type TPostList = {
   search: string
+  page: number
+  perPage: number
+  list: IPost[]
+  setList: React.Dispatch<React.SetStateAction<IPost[]>>
 }
 
-const PostList = ({ search }: TPostList) => {
-  const [list, setList] = React.useState([])
+const PostList = ({ search, page, perPage, list, setList }: TPostList) => {
   const { loading, error, data } = useQuery(ALL_POSTS_QUERY, {
-    variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true,
   })
 
@@ -45,14 +43,19 @@ const PostList = ({ search }: TPostList) => {
     } else {
       setList(data.getPosts)
     }
-  }, [data.getPosts, search])
+  }, [data.getPosts, search, setList])
+
+  const paginated = React.useCallback(() => {
+    return paginate(list, perPage, page)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [list, page])
 
   if (error) return <ErrorMessage message="Error loading posts." />
   if (loading) return <div>Loading</div>
 
   return (
     <section className="flex flex-[3] flex-col gap-12">
-      {list.map((post: IPost) => (
+      {paginated().map((post: IPost) => (
         <BlogItem key={post._id} {...post} />
       ))}
     </section>
