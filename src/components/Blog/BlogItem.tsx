@@ -3,8 +3,8 @@ import Image from 'next/image'
 import React from 'react'
 import { FiCalendar, FiMessageSquare, FiUser } from 'react-icons/fi'
 import { IPost } from 'types/post'
-import striptags from 'striptags'
 import moment from 'jalali-moment'
+import { striptags } from 'utils'
 
 const BlogItem = ({
   _id,
@@ -15,12 +15,14 @@ const BlogItem = ({
   introImageUrl,
   title,
 }: IPost) => {
+  const image = `/api/imageproxy?url=${encodeURIComponent(
+    `${introImageUrl.host}${introImageUrl.path}`
+  )}`
+
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl bg-white sm:flex-row">
       <Image
-        src={`/api/imageproxy?url=${encodeURIComponent(
-          `${introImageUrl.host}${introImageUrl.path}`
-        )}`}
+        src={image}
         alt={title}
         width={300}
         height={280}
